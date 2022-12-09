@@ -1,6 +1,6 @@
 {
-  "name": "GPT-3 Writer",
-  "description": "Write a blog post in the style of your favorite thinker anywhere!",
+  "name": "Quick Styles",
+  "description": "Having trouble coming up with content ideas? Level-up your CSS skills by having us generate unique HTML for you to practice on!",
   "version": "1.0",
   "manifest_version": 3,
   "icons": {
@@ -12,5 +12,6 @@
   "action": {
     "default_popup": "index.html",
     "default_title": "Generate blog post"
-  }
+  },
+  "permissions": ["contextMenus", "tabs", "storage"]
 }
