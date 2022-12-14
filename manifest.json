@@ -11,7 +11,10 @@
   },
   "action": {
     "default_popup": "index.html",
-    "default_title": "Generate blog post"
+    "default_title": "Generate quick HTML"
+  },
+  "background": {
+    "service_worker": "scripts/contextMenuServiceWorker.js"
   },
   "permissions": ["contextMenus", "tabs", "storage"]
 }
