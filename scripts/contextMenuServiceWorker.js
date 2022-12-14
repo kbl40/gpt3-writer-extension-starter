@@ -9,6 +9,22 @@ const getKey = () => {
     });
 };
 
+const sendMessage = (content) => {
+    chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
+        const activeTab = tabs[0].id;
+
+        chrome.tabs.sendMessage(
+            activeTab,
+            { message: 'inject', content },
+            (response) => {
+                if (response.status === 'failed') {
+                    console.log('injection failed.');
+                }
+            }
+        );
+    });
+};
+
 const generate = async (prompt) => {
     // Get API key from storage
     const key = await getKey();
@@ -36,6 +52,9 @@ const generate = async (prompt) => {
 
 const generateCompletionAction = async (info) => {
     try {
+        // Send message with generating text (similar to a loading indicator)
+        sendMessage('generating...');
+        
         const { selectionText } = info;
         const basePromptPrefix = `
             Write four very short headings for a company's blog post describing its product.
@@ -53,11 +72,16 @@ const generateCompletionAction = async (info) => {
             Company Description: ${selectionText}
         `
         const secondPromptCompletion = await generate(secondPrompt);
-        console.log(secondPromptCompletion.text)
+        
+        // Send the output when complete
+        sendMessage(secondPromptCompletion.text);
     } catch (error) {
         console.log(error);
+
+        // Notify if there are errors
+        sendMessage(error.toString());
     }
-}
+};
 
 chrome.runtime.onInstalled.addListener(() => {
     chrome.contextMenus.create({
